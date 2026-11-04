@@ -1,0 +1,112 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Branch {
+  id         Int        @id @default(autoincrement())
+  branchCode String     @unique @map("branch_code")
+  branchName String     @map("branch_name")
+  address    String
+  city       String
+  phone      String
+  isActive   Boolean    @default(true) @map("is_active")
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  users      User[]
+  assets     ITAsset[]
+  tickets    ITTicket[]
+
+  @@map("branches")
+}
+
+model User {
+  id              Int        @id @default(autoincrement())
+  name            String
+  email           String     @unique
+  passwordHash    String?    @map("password_hash")
+  role            String
+  branchId        Int        @map("branch_id")
+  branch          Branch     @relation(fields: [branchId], references: [id])
+  createdAt       DateTime   @default(now()) @map("created_at")
+  updatedAt       DateTime   @updatedAt @map("updated_at")
+  assets          ITAsset[]
+  tickets         ITTicket[] @relation("TicketReporter")
+  assignedTickets ITTicket[] @relation("TicketAssignee")
+
+  @@index([branchId])
+  @@map("users")
+}
+
+model Product {
+  id          Int      @id @default(autoincrement())
+  sku         String   @unique
+  name        String
+  category    String
+  description String
+  imageUrl    String   @map("image_url")
+  isActive    Boolean  @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("products")
+}
+
+model B2BPartnerRequest {
+  id        Int      @id @default(autoincrement())
+  storeName String   @map("store_name")
+  ownerName String   @map("owner_name")
+  phone     String
+  address   String
+  city      String
+  status    String   @default("pending")
+  notes     String   @default("")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("b2b_partner_requests")
+}
+
+model ITAsset {
+  id           Int      @id @default(autoincrement())
+  assetTag     String   @unique @map("asset_tag")
+  name         String
+  category     String
+  serialNumber String   @map("serial_number")
+  branchId     Int      @map("branch_id")
+  branch       Branch   @relation(fields: [branchId], references: [id])
+  userId       Int?     @map("user_id")
+  user         User?    @relation(fields: [userId], references: [id])
+  condition    String
+  status       String
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("it_assets")
+}
+
+model ITTicket {
+  id          Int      @id @default(autoincrement())
+  ticketCode  String   @unique @map("ticket_code")
+  userId      Int      @map("user_id")
+  user        User     @relation("TicketReporter", fields: [userId], references: [id])
+  branchId    Int      @map("branch_id")
+  branch      Branch   @relation(fields: [branchId], references: [id])
+  category    String
+  priority    String
+  subject     String
+  description String
+  status      String   @default("open")
+  assignedTo  Int?     @map("assigned_to")
+  assignee    User?    @relation("TicketAssignee", fields: [assignedTo], references: [id])
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@index([branchId, status])
+  @@index([userId, createdAt])
+  @@map("it_tickets")
+}
