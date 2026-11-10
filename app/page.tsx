@@ -5,11 +5,34 @@ import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
+const FALLBACK_BRANCHES = [
+  { id: 1, branchCode: "HQ-JKT-01", branchName: "Headquarters Jakarta", address: "Jl. Jend. Sudirman No. 45-46", city: "Jakarta", phone: "021-5551234", isActive: true },
+  { id: 2, branchCode: "MDN-MAR-01", branchName: "Depo Medan Marelan", address: "Jl. Tembung Marelan Raya No. 88", city: "Medan", phone: "061-7789012", isActive: true },
+  { id: 3, branchCode: "SUB-RNG-01", branchName: "Depo Surabaya Rungkut", address: "Kawasan Industri Rungkut Industri III No. 12", city: "Surabaya", phone: "031-8431122", isActive: true },
+  { id: 4, branchCode: "MKS-BKY-01", branchName: "Depo Makassar Biringkanaya", address: "Jl. Perintis Kemerdekaan KM 15", city: "Makassar", phone: "0411-5109988", isActive: true },
+];
+
+const FALLBACK_PRODUCTS = [
+  { id: 1, sku: "TOB-PILAR-MILD-16", name: "Pilar Supreme Mild 16", category: "Tobacco & Cigarettes", description: "Cengkeh pilihan aroma halus.", imageUrl: "https://images.unsplash.com/photo-1527061011665-3652c757a4d4?w=600", isActive: true },
+  { id: 2, sku: "TOB-PILAR-GOLD-12", name: "Pilar Gold Kretek 12", category: "Tobacco & Cigarettes", description: "Kretek racikan rempah nusantara.", imageUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=600", isActive: true },
+  { id: 3, sku: "BEV-FRESH-TEA-350", name: "Pilar Fresh Jasmine Tea 350ml", category: "Beverages", description: "Teh melati segar siap minum.", imageUrl: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600", isActive: true },
+  { id: 4, sku: "SNK-CRISP-BALADO-60", name: "Nusantara Cassava Chips Balado 60g", category: "Snacks & Confectionery", description: "Keripik singkong gurih renyah bumbu balado.", imageUrl: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600", isActive: true },
+];
+
 export default async function HomePage() {
-  const [branches, products] = await Promise.all([
-    prisma.branch.findMany({ where: { isActive: true }, orderBy: { id: "asc" } }),
-    prisma.product.findMany({ where: { isActive: true }, orderBy: { id: "asc" }, take: 4 }),
-  ]);
+  let branches = FALLBACK_BRANCHES;
+  let products = FALLBACK_PRODUCTS;
+
+  try {
+    const [dbBranches, dbProducts] = await Promise.all([
+      prisma.branch.findMany({ where: { isActive: true }, orderBy: { id: "asc" } }),
+      prisma.product.findMany({ where: { isActive: true }, orderBy: { id: "asc" }, take: 4 }),
+    ]);
+    if (dbBranches.length > 0) branches = dbBranches;
+    if (dbProducts.length > 0) products = dbProducts;
+  } catch (error) {
+    console.warn("Database unreachable, using fallback seed data for homepage.", error);
+  }
 
   return (
     <>
@@ -27,7 +50,6 @@ export default async function HomePage() {
             <div className="section-heading"><div><h2>Jaringan Depo & Cabang</h2><p>Pusat distribusi aktif di Indonesia</p></div><span className="badge">{branches.length} depo aktif</span></div>
             <div className="branch-list">
               {branches.map((branch) => <div className="branch-row" key={branch.id}><div><strong>{branch.branchName}</strong><br /><small>{branch.address}, {branch.city}</small></div><span className="badge">{branch.branchCode}</span></div>)}
-              {branches.length === 0 && <p className="empty">Data cabang belum tersedia.</p>}
             </div>
           </section>
         </div>

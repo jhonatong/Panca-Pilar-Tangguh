@@ -30,6 +30,7 @@ async function main() {
     { id: 2, branchCode: "MDN-MAR-01", branchName: "Depo Medan Marelan", address: "Jl. Tembung Marelan Raya No. 88", city: "Medan", phone: "061-7789012" },
     { id: 3, branchCode: "SUB-RNG-01", branchName: "Depo Surabaya Rungkut", address: "Kawasan Industri Rungkut Industri III No. 12", city: "Surabaya", phone: "031-8431122" },
     { id: 4, branchCode: "MKS-BKY-01", branchName: "Depo Makassar Biringkanaya", address: "Jl. Perintis Kemerdekaan KM 15", city: "Makassar", phone: "0411-5109988" },
+    { id: 5, branchCode: "PLM-TNG-01", branchName: "Depo Palembang Tanjung Api-Api", address: "Jl. Lintas Sumatera KM 20", city: "Palembang", phone: "0711-334455" },
   ];
 
   for (const branch of branches) {
@@ -129,3 +130,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+  
