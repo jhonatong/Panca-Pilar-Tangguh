@@ -28,8 +28,8 @@ export default async function HomePage() {
       prisma.branch.findMany({ where: { isActive: true }, orderBy: { id: "asc" } }),
       prisma.product.findMany({ where: { isActive: true }, orderBy: { id: "asc" }, take: 4 }),
     ]);
-    if (dbBranches.length > 0) branches = dbBranches;
-    if (dbProducts.length > 0) products = dbProducts;
+    if (dbBranches.length > 0) branches = dbBranches as typeof FALLBACK_BRANCHES;
+    if (dbProducts.length > 0) products = dbProducts as typeof FALLBACK_PRODUCTS;
   } catch (error) {
     console.warn("Database unreachable, using fallback seed data for homepage.", error);
   }

@@ -66,12 +66,15 @@ type ITAsset struct {
 	Name         string    `gorm:"size:150;not null" json:"name"`
 	Category     string    `gorm:"size:100;not null" json:"category"`
 	SerialNumber string    `gorm:"size:100" json:"serial_number"`
-	Condition    string    `gorm:"size:50;default:'good';not null" json:"condition"` // good, needs_repair, damaged
-	Status       string    `gorm:"size:50;default:'in_use';not null" json:"status"`   // in_use, in_stock, under_maintenance
+	Condition    string    `gorm:"size:50;default:'good';not null" json:"condition"` // good, fair, needs_repair, damaged
+	Status       string    `gorm:"size:50;default:'available';not null" json:"status"` // available, in_use, under_maintenance, decommissioned
 	BranchID     uint      `gorm:"not null" json:"branch_id"`
 	Branch       Branch    `gorm:"foreignKey:BranchID" json:"branch,omitempty"`
 	UserID       *uint     `json:"user_id"`
 	User         *User     `gorm:"foreignKey:UserID" json:"user,omitempty"`
+	Notes        string    `gorm:"type:text" json:"notes"`
+	PurchaseDate *time.Time `json:"purchase_date"`
+	WarrantyUntil *time.Time `json:"warranty_until"`
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }
@@ -91,6 +94,10 @@ type Ticket struct {
 	User        User      `gorm:"foreignKey:UserID" json:"user,omitempty"`
 	AssignedTo  *uint     `json:"assigned_to"`
 	Assignee    *User     `gorm:"foreignKey:AssignedTo" json:"assignee,omitempty"`
+	Notes       string    `gorm:"type:text" json:"notes"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
 }
+
+// ITAsset: also add Notes field
+
