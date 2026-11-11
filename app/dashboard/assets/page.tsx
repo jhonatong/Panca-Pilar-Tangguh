@@ -3,7 +3,6 @@
 import { useState } from "react";
 import {
   Search,
-  SlidersHorizontal,
   Plus,
   Server,
   Laptop,
