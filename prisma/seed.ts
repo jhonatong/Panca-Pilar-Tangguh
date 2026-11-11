@@ -66,7 +66,7 @@ async function main() {
     { sku: "BEV-FRESH-TEA-350", name: "Pilar Fresh Jasmine Tea 350ml", category: "Beverages", description: "Ready-to-drink aromatic jasmine green tea made from high-land tea leaves.", imageUrl: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=600" },
     { sku: "SNK-CRISP-BALADO-60", name: "Nusantara Cassava Chips Balado 60g", category: "Snacks & Confectionery", description: "Crunchy cassava chips seasoned with authentic Padang spicy balado chili.", imageUrl: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=600" },
   ];
-
+  
   for (const product of products) {
     await prisma.product.upsert({
       where: { sku: product.sku },
@@ -76,7 +76,7 @@ async function main() {
   }
 
   const requests = [
-    { id: 1, storeName: "Toko Kelontong Jaya Abadi", ownerName: "Haji Mansyur", phone: "081260112233", address: "Jl. Marelan Raya Pasar III No. 12", city: "Medan", status: "pending", notes: "Store applying for monthly allocation of Pilar Supreme Mild (50 crates/month)." },
+    { id: 1, storeName: "Toko Bujang", ownerName: "Haji Malau", phone: "081260112233", address: "Jl. Marelan Raya Pasar III No. 12", city: "Medan", status: "pending", notes: "Store applying for monthly allocation of Pilar Supreme Mild (50 crates/month)." },
     { id: 2, storeName: "Grosir Sembako Rungkut Makmur", ownerName: "Siti Rahmawati", phone: "081331998877", address: "Jl. Rungkut Asri Timur IV No. 45", city: "Surabaya", status: "approved", notes: "Survey verified by Branch Manager. Outlet approved for credit terms." },
   ];
 
