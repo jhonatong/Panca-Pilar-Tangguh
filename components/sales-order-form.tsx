@@ -36,8 +36,8 @@ export function SalesOrderForm({ products }: { products: Product[] }) {
       setMessage("Pesanan sales berhasil diinput!");
       setStoreName("");
       setQuantity(1);
-    } catch (err: any) {
-      setMessage(err.message || "Terjadi kesalahan.");
+    } catch (err: unknown) {
+      setMessage(err instanceof Error ? err.message : "Terjadi kesalahan.");
     } finally {
       setSubmitting(false);
     }

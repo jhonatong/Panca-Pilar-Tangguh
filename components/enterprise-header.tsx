@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Search, Bell, MapPin, ChevronDown } from "lucide-react";
+import { Search, Bell, MapPin } from "lucide-react";
 import { LogoutButton } from "./logout-button";
 
 interface HeaderProps {

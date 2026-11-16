@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Server, Search, Filter, ShieldCheck, Laptop, Printer, Smartphone } from "lucide-react";
+import { Search, Filter, Laptop, Printer, Smartphone } from "lucide-react";
 import { Badge, BadgeVariant } from "@/components/ui/badge";
 
 interface AssetRecord {

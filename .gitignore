@@ -7,3 +7,6 @@ dist/
 !.env.example
 *.tsbuildinfo
 next-env.d.ts
+*.exe
+backend
+backend_v2
