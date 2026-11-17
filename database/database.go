@@ -38,12 +38,21 @@ func ConnectDB() {
 		dbHost, dbUser, dbPassword, dbName, dbPort)
 
 	var err error
-	DB, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
+		DB = nil
 		log.Printf("GORM PostgreSQL Connection Warning: %v. Running in offline/detached mode.", err)
 		return
 	}
 
+	sqlDB, errPing := db.DB()
+	if errPing != nil || sqlDB.Ping() != nil {
+		DB = nil
+		log.Println("GORM ping unreachable. Running in offline/detached mode with fallback data.")
+		return
+	}
+
+	DB = db
 	log.Println("PostgreSQL Database connected successfully via GORM!")
 
 	// Auto-migrate tables
