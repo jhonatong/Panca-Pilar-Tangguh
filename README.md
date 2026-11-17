@@ -71,7 +71,7 @@ validation and server errors contain an `error` message.
 | `PATCH` | `/api/assets/:id` | Update asset condition or status (IT staff / super admin) |
 
 Run `npm run build` to check the production build.
-=======
+
 # Panca-Pilar-Tangguh
 Internal IT Management &amp; Helpdesk System for PT Panca Pilar Tangguh. Built with Next.js, TypeScript, &amp; Prisma to manage IT assets, ticketing, and B2B requests.
 >>>>>>> 70a3bc492888ce099c8ef55d2ec2ab65fef95749
